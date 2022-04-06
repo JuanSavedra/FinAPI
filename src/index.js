@@ -41,6 +41,8 @@ function getBalance(statement) {
 
 const customers = [];
 
+// app.use(verifyIfExistsAccountCPF); Faz com que todas as próximas rotas usem o Middleware
+
 //Criando um usuário.
 app.post("/account", (request, response) => {
     const { cpf, name } = request.body;
@@ -63,8 +65,6 @@ app.post("/account", (request, response) => {
 
     return response.status(201).send();
 });
-
-// app.use(verifyIfExistsAccountCPF); Faz com que todas as próximas rotas usem o Middleware
 
 //Buscando dados de extrato.
 app.get("/statement", verifyIfExistsAccountCPF, /* Passando Middleware como Parâmetro (Pode ser mais que um) */ 
@@ -122,6 +122,22 @@ app.get("/statement/date", verifyIfExistsAccountCPF, (request, response) => {
     );
 
     return response.json(statement);
+});
+
+//Atualizando dados do cliente. (Como estamos alterando somente um valor, poderia ter usado o PATCH)
+app.put("/account", verifyIfExistsAccountCPF, (request, response) => {
+    const { name } = request.body;
+    const { customer } = request;
+    customer.name = name;
+
+    return response.status(200).send();
+});
+
+//Obtendo dados da conta.
+app.get("/account", verifyIfExistsAccountCPF, (request, response) => {
+    const { customer } = request;
+
+    return response.json(customer);
 });
 
 app.listen(3333);
