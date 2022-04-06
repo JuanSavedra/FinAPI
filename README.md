@@ -9,7 +9,7 @@
 - [x] Deve ser possível atualizar dados da conta do cliente.
 - [x] Deve ser possível obter dados na conta do cliente.
 - [x] Deve ser possível deletar uma conta.
-- [] Deve ser possível retornar o balance.
+- [x] Deve ser possível retornar o balance.
 ---
 ## Regras de Negócio
 - [x] Não deve ser possível cadastrar uma conta com CPF já existente.

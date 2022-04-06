@@ -148,4 +148,12 @@ app.delete("/account", verifyIfExistsAccountCPF, (request, response) => {
     return response.status(200).json(customers);
 });
 
+//Retornando o saldo da conta.
+app.get("/balance", verifyIfExistsAccountCPF, (request, response) => {
+    const { customer } = request;
+    const balance = getBalance(customer.statement);
+
+    return response.json(balance);
+}); 
+
 app.listen(3333);
