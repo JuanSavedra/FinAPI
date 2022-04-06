@@ -28,6 +28,7 @@ function verifyIfExistsAccountCPF(request, response, next) {
 
 const customers = [];
 
+//Criando um usuário.
 app.post("/account", (request, response) => {
     const { cpf, name } = request.body;
     const id = uuidv4();
@@ -52,11 +53,27 @@ app.post("/account", (request, response) => {
 
 // app.use(verifyIfExistsAccountCPF); Faz com que todas as próximas rotas usem o Middleware
 
-
+//Buscando dados de extrato.
 app.get("/statement", verifyIfExistsAccountCPF, /* Passando Middleware como Parâmetro (Pode ser mais que um) */ 
     (request, response) => {
     const { customer } = request;
     return response.json(customer.statement);
+});
+
+//Criando uma operação de depósito.
+app.post("/deposit", verifyIfExistsAccountCPF, (request, response) => {
+    const { description, amount } = request.body;
+    const { customer } = request;
+    const statementOperationToDeposit = {
+        description,
+        amount,
+        createdAt: new Date(),
+        type: "credit"
+    }
+
+    customer.statement.push(statementOperationToDeposit);
+
+    return response.status(201).send();
 });
 
 app.listen(3333);
